@@ -27,6 +27,10 @@ export function ContextProvider({ children }: Props) {
 		dispatch({ type: ActionType.CLOSE_ALERT });
 	};
 
+	value.toggleBasket = () => {
+		dispatch({ type: ActionType.BASKET_TOGGLE });
+	};
+
 	value.addToBasket = (item: GoodItemType) => {
 		dispatch({ type: ActionType.ADD_TO_BASKET, payload: item });
 	};

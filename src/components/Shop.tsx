@@ -9,11 +9,7 @@ import type { GoodsResponse, GoodItemType } from '../consts/types';
 import { ShopContext } from '../context';
 
 export default function Shop() {
-	const { goods, loading, order, isBasketShow, alertName, setGoods } = useContext(ShopContext)!;
-
-	function handleBasketShow() {
-		setBasketShow(!isBasketShow);
-	}
+	const { loading, isBasketShow, alertName, setGoods } = useContext(ShopContext)!;
 
 	useEffect(() => {
 		instance<GoodsResponse>({
@@ -32,9 +28,9 @@ export default function Shop() {
 
 	return (
 		<main className='container shop-wrapper'>
-			<Cart quantity={order.length} handleBasketShow={handleBasketShow} />
+			<Cart />
 			{loading ? <Preloader /> : <GoodsList />}
-			{isBasketShow && <BasketList items={order} />}
+			{isBasketShow && <BasketList />}
 			{alertName && <Alert />}
 		</main>
 	);

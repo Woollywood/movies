@@ -1,16 +1,14 @@
 import GoodsItem from './GoodsItem';
-import type { GoodItemType } from '../consts/types';
+import { ShopContext } from '../context';
+import { useContext } from 'react';
 
-interface Props {
-	items: GoodItemType[];
-}
+export default function GoodsList() {
+	const context = useContext(ShopContext);
+	const { goods } = context!;
 
-export default function GoodsList(props: Props) {
-	const { items = [] } = props;
-
-	return items.length === 0 ? (
+	return goods.length === 0 ? (
 		<h3>Ничего не найдено</h3>
 	) : (
-		items.map((item) => <GoodsItem key={item.mainId} item={item} />)
+		goods.map((item) => <GoodsItem key={item.mainId} item={item} />)
 	);
 }

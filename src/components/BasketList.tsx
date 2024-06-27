@@ -1,39 +1,21 @@
-import type { CartItemType } from '../consts/types';
 import BasketItem from './BasketItem';
+import { ShopContext } from '../context';
+import { useContext } from 'react';
 
-interface Props {
-	items: CartItemType[];
-	removeFromBasket: (id: number) => void;
-	handleBasketShow: () => void;
-	incrementOrderItem: (id: number) => void;
-	decrementOrderItem: (id: number) => void;
-}
+export default function BasketList() {
+	const context = useContext(ShopContext);
+	const { order, toggleBasket } = context!;
 
-export default function BasketList({
-	items,
-	removeFromBasket,
-	incrementOrderItem,
-	decrementOrderItem,
-	handleBasketShow,
-}: Props) {
-	const totalPrice = items.reduce((sum, item) => sum + item.price.regularPrice * item.quantity, 0);
+	const totalPrice = order.reduce((sum, item) => sum + item.price.regularPrice * item.quantity, 0);
 
 	return (
 		<ul className='collection basket'>
-			<button className='basket__close' onClick={handleBasketShow}>
+			<button className='basket__close' onClick={toggleBasket}>
 				X
 			</button>
 			<li className='collection-item active'>Корзина</li>
-			{items.length ? (
-				items.map((item) => (
-					<BasketItem
-						key={item.mainId}
-						item={item}
-						removeFromBasket={removeFromBasket}
-						incrementOrderItem={incrementOrderItem}
-						decrementOrderItem={decrementOrderItem}
-					/>
-				))
+			{order.length ? (
+				order.map((item) => <BasketItem key={item.mainId} item={item} />)
 			) : (
 				<li className='collection-item'>Корзина пуста</li>
 			)}

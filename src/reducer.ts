@@ -20,6 +20,7 @@ export type State = {
 	setGoods?: (items: GoodItemType[]) => void;
 	closeAlert?: () => void;
 	addToBasket?: (item: GoodItemType) => void;
+	toggleBasket?: () => void;
 	incrementOrderItem?: (id: number) => void;
 	decrementOrderItem?: (id: number) => void;
 	removeFromBasket?: (id: number) => void;
