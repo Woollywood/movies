@@ -11,6 +11,6 @@ export default function GoodsList(props: Props) {
 	return items.length === 0 ? (
 		<h3>Ничего не найдено</h3>
 	) : (
-		items.map((item) => <GoodsItem key={item.mainId} {...item} />)
+		items.map((item) => <GoodsItem key={item.mainId} item={item} />)
 	);
 }

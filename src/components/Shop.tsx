@@ -1,12 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { instance } from '../api/instance';
 import Preloader from './Preloader';
 import GoodsList from './GoodsList';
+import Cart from './Cart';
+import BasketList from './BasketList';
+import Alert from './Alert';
 import type { GoodsResponse, GoodItemType } from '../consts/types';
+import { ShopContext } from '../context';
 
 export default function Shop() {
-	const [goods, setGoods] = useState<GoodItemType[]>([]);
-	const [loading, setLoading] = useState(true);
+	const { goods, loading, order, isBasketShow, alertName, setGoods } = useContext(ShopContext)!;
+
+	function handleBasketShow() {
+		setBasketShow(!isBasketShow);
+	}
 
 	useEffect(() => {
 		instance<GoodsResponse>({
@@ -15,20 +22,20 @@ export default function Shop() {
 			const { shop: shopOriginal } = data;
 			const ids = new Set(shopOriginal.map((item) => item.mainId));
 			const shopResult: GoodItemType[] = [];
-
 			for (const id of ids) {
 				shopResult.push(shopOriginal.find((item) => item.mainId === id)!);
 			}
 
-			// setGoods(shopResult);
-			setLoading(false);
+			setGoods!(shopResult);
 		});
-
-		console.log('mount');
-		return () => {
-			console.log('unmount');
-		};
 	}, []);
 
-	return <main className='container'>{loading ? <Preloader /> : <GoodsList items={goods} />}</main>;
+	return (
+		<main className='container shop-wrapper'>
+			<Cart quantity={order.length} handleBasketShow={handleBasketShow} />
+			{loading ? <Preloader /> : <GoodsList />}
+			{isBasketShow && <BasketList items={order} />}
+			{alertName && <Alert />}
+		</main>
+	);
 }
